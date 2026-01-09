@@ -1,7 +1,7 @@
 # Aidan Anderson 1/8/26
 
 import pytest
-
+import sys
 
 # Driver program
 
@@ -51,19 +51,81 @@ def insertionSort(sortList):
                 break
 
 def rec_mergesort(sortList):
-    # can split into chunks
-        # split into chunks
-    # else go back
-    # compare first two elements of chunks if left is bigger swap
-    # 
-    pass
+    # print(sortList)
 
+    # base case single thing
+    if len(sortList) == 1:
+        # print ("returning because single elem " + str(sortList[0]))
+        return sortList
+    
+    # split
+    halfpoint = int(len(sortList)/2)
+    left = rec_mergesort(sortList[:halfpoint])
+    right = rec_mergesort(sortList[halfpoint:])
+
+    # print(left)
+    # print(right)
     
 
     
-            
 
+    # merge left and right
+    # print("merging " + str(left) + " and " + str(right))
+    newlist = []
+    total = len(left)+len(right)
+    indexleft = 0
+    indexright = 0
+    count = 0
+    while count < total:
+        if indexleft > len(left)-1:
+            if indexright > len(right)-1:
+                break
+            else:
+                newlist.append(right[indexright])
+                indexright += 1
+                count += 1
+                continue
+                
+        if indexright > len(right)-1:
+            if indexleft > len(left)-1:
+                break
+            else:
+                newlist.append(left[indexleft])
+                indexleft += 1
+                count += 1
+                continue
 
+        if left[indexleft] < right[indexright]:
+            newlist.append(left[indexleft])
+            indexleft += 1
+            count += 1
+            continue
+
+        else:
+            newlist.append(right[indexright])
+            indexright += 1
+            count += 1
+            continue
+    
+    # for some reason this isn't changing the initiallist, so the test is failing.
+    sortList = newlist
+    # print("returning " + str(sortList))
+    return sortList
+    
+def countingsort(sortList):
+    countlist = [None] * 100
+    for i in sortList:
+        if countlist[i] == None:
+            countlist[i] = 0
+        countlist[i] += 1
+    
+    newlist = []
+    for i in range(len(countlist)):
+        if countlist[i] != None:
+            for j in range(countlist[i]):
+                newlist.append(i)
+    
+    sortList = newlist
 
 
 # Tests
@@ -97,3 +159,6 @@ def test_insertionSort():
 
 def test_rec_mergesort():
     all_cases_test(rec_mergesort)
+
+def test_countingsort():
+    all_cases_test(countingsort)
